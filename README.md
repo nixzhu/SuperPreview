@@ -20,13 +20,13 @@ See the demo.
 ### Carthage
 
 ```ogdl
-github "nixzhu/SuperPreview" >= 0.5.0
+github "nixzhu/SuperPreview" >= 0.5.1
 ```
 
 ### CocoaPods
 
 ```ruby
-pod 'SuperPreview', '~> 0.5.0'
+pod 'SuperPreview', '~> 0.5.1'
 ```
 
 ## Contact
