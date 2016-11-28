@@ -10,6 +10,8 @@ import UIKit
 
 open class PhotosViewController: UIViewController {
 
+    public var afterStatusBarAppearedAction: (() -> Void)?
+
     fileprivate weak var delegate: PhotosViewControllerDelegate?
     fileprivate let dataSource: PhotosViewControllerDataSource
 
@@ -193,6 +195,9 @@ open class PhotosViewController: UIViewController {
     private var statusBarHidden: Bool = false {
         didSet {
             setNeedsStatusBarAppearanceUpdate()
+            if !statusBarHidden {
+                afterStatusBarAppearedAction?()
+            }
         }
     }
 
