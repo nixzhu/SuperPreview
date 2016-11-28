@@ -12,12 +12,39 @@ class OverlayActionView: UIView {
 
     var shareAction: (() -> Void)?
 
-    private lazy var shareButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("Share", for: .normal)
-        button.addTarget(self, action: #selector(OverlayActionView.share(_:)), for: .touchUpInside)
-        return button
+    private lazy var toolbar: UIToolbar = {
+        let toolbar = UIToolbar()
+        toolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
+        toolbar.setBackgroundImage(UIImage(), forToolbarPosition: .any, barMetrics: .default)
+        toolbar.backgroundColor = .clear
+        toolbar.items = [
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+            UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(share(_:)))
+        ]
+        return toolbar
     }()
+
+    override func didMoveToSuperview() {
+        super.didMoveToSuperview()
+
+        makeUI()
+    }
+
+    private func makeUI() {
+        addSubview(toolbar)
+        toolbar.translatesAutoresizingMaskIntoConstraints = false
+        let views = [
+            "toolbar": toolbar
+        ]
+        let constraintsH = NSLayoutConstraint.constraints(withVisualFormat: "H:|[toolbar]|", options: [], metrics: nil, views: views)
+        let constraintsV = NSLayoutConstraint.constraints(withVisualFormat: "V:[toolbar]|", options: [], metrics: nil, views: views)
+        NSLayoutConstraint.activate(constraintsH)
+        NSLayoutConstraint.activate(constraintsV)
+    }
+
+    @objc fileprivate func share(_ sender: UIButton) {
+        shareAction?()
+    }
 
     override func draw(_ rect: CGRect) {
         let startColor: UIColor = UIColor.clear
@@ -30,23 +57,5 @@ class OverlayActionView: UIView {
         let startPoint = CGPoint.zero
         let endPoint = CGPoint(x: 0, y: rect.height)
         context!.drawLinearGradient(gradient!, start: startPoint, end: endPoint, options: CGGradientDrawingOptions(rawValue: 0))
-    }
-
-    override func didMoveToSuperview() {
-        super.didMoveToSuperview()
-
-        makeUI()
-    }
-
-    private func makeUI() {
-        addSubview(shareButton)
-        shareButton.translatesAutoresizingMaskIntoConstraints = false
-        let trailing = shareButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -30)
-        let bottom = shareButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -30)
-        NSLayoutConstraint.activate([trailing, bottom])
-    }
-
-    @objc fileprivate func share(_ sender: UIButton) {
-        shareAction?()
     }
 }
