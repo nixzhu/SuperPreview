@@ -2,10 +2,10 @@ Pod::Spec.new do |s|
 
   s.name        = "SuperPreview"
   s.version     = "0.5.0"
-  s.summary     = "SuperPreview for Images Preview."
+  s.summary     = "SuperPreview for Image Preview."
 
   s.description = <<-DESC
-                   SuperPreview make show image preview easy, even for masked image.
+                   SuperPreview make show image preview easier, even for masked image.
                    DESC
 
   s.homepage    = "https://github.com/nixzhu/SuperPreview"
