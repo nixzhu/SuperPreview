@@ -11,22 +11,18 @@ SuperPreview for Image Preview.
 
 Swift 3, iOS 9
 
-## Usage
-
-See the demo.
-
 ## Installation
 
 ### Carthage
 
 ```ogdl
-github "nixzhu/SuperPreview" >= 0.5.2
+github "nixzhu/SuperPreview" >= 0.5.3
 ```
 
 ### CocoaPods
 
 ```ruby
-pod 'SuperPreview', '~> 0.5.2'
+pod 'SuperPreview', '~> 0.5.3'
 ```
 
 ## Contact
