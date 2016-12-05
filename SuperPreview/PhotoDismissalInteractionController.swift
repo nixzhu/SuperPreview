@@ -15,9 +15,9 @@ class PhotoDismissalInteractionController: NSObject {
     var viewToHideWhenBeginningTransition: UIView?
     var shouldAnimateUsingAnimator = true
 
-    fileprivate let panDismissDistanceRatio: CGFloat = 50.0 / 667.0
-    fileprivate let panDismissMaximumDuration: CGFloat = 0.45
-    fileprivate let returnToCenterVelocityAnimationRatio: CGFloat = 0.00007
+    private let panDismissDistanceRatio: CGFloat = 50.0 / 667.0
+    private let panDismissMaximumDuration: CGFloat = 0.45
+    private let returnToCenterVelocityAnimationRatio: CGFloat = 0.00007
 
     func didPanWithPanGestureRecognizer(_ pan: UIPanGestureRecognizer, viewToPan: UIView, anchorPoint: CGPoint) {
         guard let fromView = transitionContext?.view(forKey: UITransitionContextViewKey.from) else {
