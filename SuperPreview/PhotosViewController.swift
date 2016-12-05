@@ -164,6 +164,8 @@ open class PhotosViewController: UIViewController {
                     endingReference = Reference(view: imageView, image: imageView.image)
                 }
                 transitionController.setEndingReference(endingReference)
+            } else {
+                print("Warning: currentlyDisplayedPhoto.image is nil")
             }
         }
     }
