@@ -53,7 +53,7 @@ extension PhotoTransitonController: UIViewControllerTransitioningDelegate {
             return nil
         }
         if let endingView = endingReference?.imageView {
-            self.animator.endingViewForAnimation = PhotoTransitionAnimator.newAnimationViewFromView(endingView)
+            self.animator.endingViewForAnimation = PhotoTransitionAnimator.newAnimationView(from: endingView)
         }
         interactionController.animator = animator
         interactionController.shouldAnimateUsingAnimator = (endingReference?.view != nil)

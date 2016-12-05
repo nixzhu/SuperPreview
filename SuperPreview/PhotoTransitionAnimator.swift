@@ -31,7 +31,7 @@ class PhotoTransitionAnimator: NSObject {
         return (startingReference != nil) && (endingReference != nil)
     }
 
-    fileprivate class func newViewFromView(_ view: UIView) -> UIView {
+    private class func newView(from view: UIView) -> UIView {
         let newView: UIView
         if view.layer.contents != nil {
             if let image = (view as? UIImageView)?.image {
@@ -52,8 +52,8 @@ class PhotoTransitionAnimator: NSObject {
         return newView
     }
 
-    class func newAnimationViewFromView(_ view: UIView) -> UIView {
-        return newViewFromView(view)
+    class func newAnimationView(from view: UIView) -> UIView {
+        return newView(from: view)
     }
 
     class func centerPointForView(_ view: UIView, translatedToContainerView containerView: UIView) -> CGPoint {
@@ -138,13 +138,13 @@ extension PhotoTransitionAnimator: UIViewControllerAnimatedTransitioning {
         if _startingViewForAnimation == nil {
             if let startingReference = startingReference {
                 let view = isDismissing ? startingReference.view : startingReference.imageView
-                _startingViewForAnimation = PhotoTransitionAnimator.newAnimationViewFromView(view)
+                _startingViewForAnimation = PhotoTransitionAnimator.newAnimationView(from: view)
             }
         }
         if _endingViewForAnimation == nil {
             if let endingReference = endingReference {
                 let view = isDismissing ? endingReference.imageView : endingReference.view
-                _endingViewForAnimation = PhotoTransitionAnimator.newAnimationViewFromView(view)
+                _endingViewForAnimation = PhotoTransitionAnimator.newAnimationView(from: view)
             }
         }
         guard let startingViewForAnimation = _startingViewForAnimation else {
@@ -165,12 +165,12 @@ extension PhotoTransitionAnimator: UIViewControllerAnimatedTransitioning {
         endingViewForAnimation.frame = originalStartingViewForAnimation.frame
         var startingMaskView: UIView?
         if let _startingMaskView = startingReference?.view.mask {
-            startingMaskView = PhotoTransitionAnimator.newViewFromView(_startingMaskView)
+            startingMaskView = PhotoTransitionAnimator.newAnimationView(from: _startingMaskView)
             startingMaskView?.frame = startingViewForAnimation.bounds
         }
         var endingMaskView: UIView?
         if let _endingMaskView = endingReference?.view.mask {
-            endingMaskView = PhotoTransitionAnimator.newViewFromView(_endingMaskView)
+            endingMaskView = PhotoTransitionAnimator.newAnimationView(from: _endingMaskView)
             endingMaskView?.frame = endingViewForAnimation.bounds
         }
         startingViewForAnimation.mask = startingMaskView
