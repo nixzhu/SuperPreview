@@ -18,14 +18,14 @@ class PhotoTransitionAnimator: NSObject {
 
     var isDismissing: Bool = false
 
-    var animationDurationWithZooming: TimeInterval = 0.4
-    var animationDurationWithoutZooming: TimeInterval = 0.3
+    let animationDurationWithZooming: TimeInterval = Config.animationDurationWithZooming ?? 0.4
+    let animationDurationWithoutZooming: TimeInterval = Config.animationDurationWithoutZooming ?? 0.3
 
-    var animationDurationFadeRatio: TimeInterval = 4.0 / 9.0
-    var animationDurationEndingViewFadeInRatio: TimeInterval = 0.1
-    var animationDurationStartingViewFadeOutRatio: TimeInterval = 0.05
+    let animationDurationFadeRatio: TimeInterval = 4.0 / 9.0
+    let animationDurationEndingViewFadeInRatio: TimeInterval = 0.1
+    let animationDurationStartingViewFadeOutRatio: TimeInterval = 0.05
 
-    var zoomingAnimationSpringDamping: CGFloat = 0.9
+    let zoomingAnimationSpringDamping: CGFloat = 0.9
 
     var shouldPerformZoomingAnimation: Bool {
         return (startingReference != nil) && (endingReference != nil)
