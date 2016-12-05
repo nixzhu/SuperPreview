@@ -16,13 +16,13 @@ Swift 3, iOS 9
 ### Carthage
 
 ```ogdl
-github "nixzhu/SuperPreview" >= 0.5.3
+github "nixzhu/SuperPreview" >= 0.5.4
 ```
 
 ### CocoaPods
 
 ```ruby
-pod 'SuperPreview', '~> 0.5.3'
+pod 'SuperPreview', '~> 0.5.4'
 ```
 
 ## Contact
