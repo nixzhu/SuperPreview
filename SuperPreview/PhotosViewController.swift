@@ -10,7 +10,8 @@ import UIKit
 
 open class PhotosViewController: UIViewController {
 
-    public var afterStatusBarAppearedAction: (() -> Void)?
+    public var windowLevelInPreview: UIWindowLevel = UIWindowLevelStatusBar + 1
+    private var windowLevelBeforePreview: UIWindowLevel?
 
     fileprivate weak var delegate: PhotosViewControllerDelegate?
     fileprivate let dataSource: PhotosViewControllerDataSource
@@ -168,14 +169,14 @@ open class PhotosViewController: UIViewController {
                 print("Warning: currentlyDisplayedPhoto.image is nil")
             }
         }
+
+        windowLevelBeforePreview = view.window?.windowLevel
     }
 
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(0.15 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)) { [weak self] in
-            self?.statusBarHidden = true
-        }
+        view.window?.windowLevel = windowLevelInPreview
     }
 
     open override func viewDidAppear(_ animated: Bool) {
@@ -189,26 +190,7 @@ open class PhotosViewController: UIViewController {
     open override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
-        statusBarHidden = false
-    }
-
-    // MARK: Status Bar
-
-    private var statusBarHidden: Bool = false {
-        didSet {
-            setNeedsStatusBarAppearanceUpdate()
-            if !statusBarHidden {
-                afterStatusBarAppearedAction?()
-            }
-        }
-    }
-
-    open override var prefersStatusBarHidden : Bool {
-        return statusBarHidden
-    }
-
-    open override var preferredStatusBarUpdateAnimation : UIStatusBarAnimation {
-        return .fade
+        view.window?.windowLevel = windowLevelBeforePreview ?? UIWindowLevelNormal
     }
 
     // MARK: Selectors
