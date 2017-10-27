@@ -9,20 +9,20 @@ SuperPreview for Image Preview.
 
 ## Requirements
 
-Swift 3, iOS 9
+Swift 4, iOS 9
 
 ## Installation
 
 ### Carthage
 
 ```ogdl
-github "nixzhu/SuperPreview" >= 0.5.4
+github "nixzhu/SuperPreview"
 ```
 
 ### CocoaPods
 
 ```ruby
-pod 'SuperPreview', '~> 0.5.4'
+pod 'SuperPreview'
 ```
 
 ## Contact
