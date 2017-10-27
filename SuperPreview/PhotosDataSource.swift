@@ -12,7 +12,7 @@ class PhotosDataSource: NSObject {
 
     let photos: [Photo]
 
-    fileprivate let _photos: NSArray
+    private let _photos: NSArray
 
     init(photos: [Photo]) {
         self.photos = photos

@@ -13,8 +13,8 @@ open class PhotosViewController: UIViewController {
     public var windowLevelInPreview: UIWindowLevel = UIWindowLevelStatusBar + 1
     private var windowLevelBeforePreview: UIWindowLevel?
 
-    fileprivate weak var delegate: PhotosViewControllerDelegate?
-    fileprivate let dataSource: PhotosViewControllerDataSource
+    private weak var delegate: PhotosViewControllerDelegate?
+    private let dataSource: PhotosViewControllerDataSource
 
     private lazy var transitionController = PhotoTransitonController()
     private var overlayActionViewWasHiddenBeforeTransition = false
@@ -46,7 +46,7 @@ open class PhotosViewController: UIViewController {
     private var currentPhotoViewController: PhotoViewController? {
         return pageViewController.viewControllers?.first as? PhotoViewController
     }
-    fileprivate var currentlyDisplayedPhoto: Photo? {
+    private var currentlyDisplayedPhoto: Photo? {
         return currentPhotoViewController?.photo
     }
     private var referenceForCurrentPhoto: Reference? {
@@ -122,7 +122,7 @@ open class PhotosViewController: UIViewController {
         }
     }
 
-    fileprivate func newPhotoViewControllerForPhoto(_ photo: Photo) -> PhotoViewController {
+    private func newPhotoViewControllerForPhoto(_ photo: Photo) -> PhotoViewController {
         let photoViewController = PhotoViewController(photo: photo)
         singleTapGestureRecognizer.require(toFail: photoViewController.doubleTapGestureRecognizer)
         return photoViewController

@@ -42,7 +42,7 @@ class OverlayActionView: UIView {
         NSLayoutConstraint.activate(constraintsV)
     }
 
-    @objc fileprivate func share(_ sender: UIButton) {
+    @objc private func share(_ sender: UIButton) {
         shareAction?()
     }
 
