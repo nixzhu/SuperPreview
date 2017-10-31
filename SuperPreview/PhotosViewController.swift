@@ -78,10 +78,11 @@ open class PhotosViewController: UIViewController {
 
     // MARK: Init
 
-    public init(photos: [Photo], initialPhoto: Photo, delegate: PhotosViewControllerDelegate? = nil) {
+    public init(photos: [Photo], initialPhoto: Photo, delegate: PhotosViewControllerDelegate? = nil, preferredStatusBarStyle: UIStatusBarStyle = .default) {
 
         self.dataSource = PhotosDataSource(photos: photos)
         self.delegate = delegate
+        self._preferredStatusBarStyle = preferredStatusBarStyle
 
         super.init(nibName: nil, bundle: nil)
 
@@ -198,6 +199,11 @@ open class PhotosViewController: UIViewController {
     }
 
     // MARK: Status Bar
+
+    private let _preferredStatusBarStyle: UIStatusBarStyle
+    open override var preferredStatusBarStyle: UIStatusBarStyle {
+        return _preferredStatusBarStyle
+    }
 
     private var statusBarHidden: Bool = false {
         didSet {
