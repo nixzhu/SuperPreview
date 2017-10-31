@@ -10,8 +10,7 @@ import UIKit
 
 open class PhotosViewController: UIViewController {
 
-    public var windowLevelInPreview: UIWindowLevel = UIWindowLevelStatusBar + 1
-    private var windowLevelBeforePreview: UIWindowLevel?
+    public var afterStatusBarAppearedAction: (() -> Void)?
 
     private weak var delegate: PhotosViewControllerDelegate?
     private let dataSource: PhotosViewControllerDataSource
@@ -100,7 +99,7 @@ open class PhotosViewController: UIViewController {
         }
         setCurrentlyDisplayedViewController(initialPhotoViewController, animated: false)
     }
-    
+
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -149,9 +148,14 @@ open class PhotosViewController: UIViewController {
         do {
             view.addSubview(overlayActionView)
             overlayActionView.translatesAutoresizingMaskIntoConstraints = false
-            let leading = overlayActionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0)
-            let trailing = overlayActionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0)
-            let bottom = overlayActionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
+            let leading = overlayActionView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
+            let trailing = overlayActionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+            let bottom: NSLayoutConstraint
+            if #available(iOS 11.0, *) {
+                bottom = overlayActionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            } else {
+                bottom = overlayActionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            }
             let height = overlayActionView.heightAnchor.constraint(equalToConstant: 80)
             NSLayoutConstraint.activate([leading, trailing, bottom, height])
             setOverlayActionViewHidden(true, animated: false)
@@ -169,14 +173,14 @@ open class PhotosViewController: UIViewController {
                 print("Warning: currentlyDisplayedPhoto.image is nil")
             }
         }
-
-        windowLevelBeforePreview = view.window?.windowLevel
     }
 
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        view.window?.windowLevel = windowLevelInPreview
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) { [weak self] in
+            self?.statusBarHidden = true
+        }
     }
 
     open override func viewDidAppear(_ animated: Bool) {
@@ -190,7 +194,26 @@ open class PhotosViewController: UIViewController {
     open override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
-        view.window?.windowLevel = windowLevelBeforePreview ?? UIWindowLevelNormal
+        statusBarHidden = false
+    }
+
+    // MARK: Status Bar
+
+    private var statusBarHidden: Bool = false {
+        didSet {
+            setNeedsStatusBarAppearanceUpdate()
+            if !statusBarHidden {
+                afterStatusBarAppearedAction?()
+            }
+        }
+    }
+
+    open override var prefersStatusBarHidden : Bool {
+        return statusBarHidden
+    }
+
+    open override var preferredStatusBarUpdateAnimation : UIStatusBarAnimation {
+        return .fade
     }
 
     // MARK: Selectors
