@@ -6,7 +6,7 @@
 //  Copyright © 2016年 nixWork. All rights reserved.
 //
 
-public protocol PhotosViewControllerDelegate: class {
+public protocol PhotosViewControllerDelegate: AnyObject {
 
     func photosViewController(_ vc: PhotosViewController, referenceForPhoto photo: Photo) -> Reference?
     func photosViewController(_ vc: PhotosViewController, didNavigateToPhoto photo: Photo, atIndex index: Int)
