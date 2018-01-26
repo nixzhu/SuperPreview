@@ -17,6 +17,7 @@ open class PhotosViewController: UIViewController {
 
     private lazy var transitionController = PhotoTransitonController()
     private var overlayActionViewWasHiddenBeforeTransition = false
+    private var heightAnchorConstraint: NSLayoutConstraint!
 
     private lazy var overlayActionView: OverlayActionView = {
         let view = OverlayActionView()
@@ -151,14 +152,9 @@ open class PhotosViewController: UIViewController {
             overlayActionView.translatesAutoresizingMaskIntoConstraints = false
             let leading = overlayActionView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
             let trailing = overlayActionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-            let bottom: NSLayoutConstraint
-            if #available(iOS 11.0, *) {
-                bottom = overlayActionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
-            } else {
-                bottom = overlayActionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-            }
-            let height = overlayActionView.heightAnchor.constraint(equalToConstant: 80)
-            NSLayoutConstraint.activate([leading, trailing, bottom, height])
+            let bottom = overlayActionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            heightAnchorConstraint = overlayActionView.heightAnchor.constraint(equalToConstant: 80)
+            NSLayoutConstraint.activate([leading, trailing, bottom, heightAnchorConstraint])
             setOverlayActionViewHidden(true, animated: false)
         }
 
@@ -174,6 +170,14 @@ open class PhotosViewController: UIViewController {
                 print("Warning: currentlyDisplayedPhoto.image is nil")
             }
         }
+    }
+
+    open override func viewSafeAreaInsetsDidChange() {
+        var bottomSpace: CGFloat = 0
+        if #available(iOS 11.0, *) {
+            bottomSpace = view.safeAreaInsets.bottom
+        }
+        heightAnchorConstraint.constant = 80 + bottomSpace
     }
 
     open override func viewWillAppear(_ animated: Bool) {
