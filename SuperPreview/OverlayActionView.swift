@@ -12,6 +12,7 @@ class OverlayActionView: UIView {
 
     var shareAction: (() -> Void)?
 
+    private var constraintsV: [NSLayoutConstraint] = []
     private lazy var toolbar: UIToolbar = {
         let toolbar = UIToolbar()
         toolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
@@ -39,6 +40,16 @@ class OverlayActionView: UIView {
         let constraintsH = NSLayoutConstraint.constraints(withVisualFormat: "H:|[toolbar]|", options: [], metrics: nil, views: views)
         let constraintsV = NSLayoutConstraint.constraints(withVisualFormat: "V:[toolbar(height)]|", options: [], metrics: ["height": Config.bottomBarHeight ?? 49], views: views)
         NSLayoutConstraint.activate(constraintsH)
+        NSLayoutConstraint.activate(constraintsV)
+    }
+
+    override func safeAreaInsetsDidChange() {
+        NSLayoutConstraint.deactivate(constraintsV)
+        var margin: CGFloat = 0
+        if #available(iOS 11.0, *) {
+            margin = safeAreaInsets.bottom
+        }
+        constraintsV = NSLayoutConstraint.constraints(withVisualFormat: "V:[toolbar(height)]-margin-|", options: [], metrics: ["height": Config.bottomBarHeight ?? 49, "margin": margin], views: ["toolbar": toolbar])
         NSLayoutConstraint.activate(constraintsV)
     }
 
