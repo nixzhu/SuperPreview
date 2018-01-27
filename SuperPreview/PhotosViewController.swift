@@ -58,6 +58,7 @@ open class PhotosViewController: UIViewController {
 
     private lazy var panGestureRecognizer: UIPanGestureRecognizer = {
         let pan = UIPanGestureRecognizer()
+        pan.delegate = self
         pan.addTarget(self, action: #selector(PhotosViewController.didPan(_:)))
         return pan
     }()
@@ -301,5 +302,15 @@ extension PhotosViewController: UIPageViewControllerDelegate {
             let index = dataSource.indexOfPhoto(photo)
             delegate?.photosViewController(self, didNavigateToPhoto: photo, atIndex: index)
         }
+    }
+}
+
+extension PhotosViewController: UIGestureRecognizerDelegate {
+    public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        guard let sender = gestureRecognizer as? UIPanGestureRecognizer else { return true }
+        let translatedPanGesturePoint = sender.translation(in: pageViewController.view)
+        let newCenterPoint = CGPoint(x: boundsCenterPoint.x, y: boundsCenterPoint.y + translatedPanGesturePoint.y)
+        let verticalDelta = newCenterPoint.y - boundsCenterPoint.y
+        return verticalDelta > 0
     }
 }

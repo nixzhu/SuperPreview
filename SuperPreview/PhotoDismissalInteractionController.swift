@@ -28,6 +28,12 @@ class PhotoDismissalInteractionController: NSObject {
         let viewToPan = viewToPan
         viewToPan.center = newCenterPoint
         let verticalDelta = newCenterPoint.y - anchorPoint.y
+        if verticalDelta < 0 {
+            if pan.state == .ended {
+
+            }
+            return
+        }
         let backgroundAlpha = backgroundAlphaForPanningWithVerticalDelta(verticalDelta)
         fromView.backgroundColor = fromView.backgroundColor?.withAlphaComponent(backgroundAlpha)
         if pan.state == .ended {
@@ -57,8 +63,10 @@ class PhotoDismissalInteractionController: NSObject {
         var finalPageViewCenterPoint = anchorPoint
         var finalBackgroundAlpha: CGFloat = 1.0
         let dismissDistance = panDismissDistanceRatio * fromView.bounds.height
+        print("------------- verticalDelta", verticalDelta)
         let isDismissing = abs(verticalDelta) > dismissDistance
         var didAnimateUsingAnimator = false
+        print("----------- isDismissing", isDismissing)
         if isDismissing {
             if shouldAnimateUsingAnimator {
                 if let transitionContext = transitionContext {
