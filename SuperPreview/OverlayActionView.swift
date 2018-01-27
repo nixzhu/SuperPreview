@@ -38,7 +38,7 @@ class OverlayActionView: UIView {
             "toolbar": toolbar
         ]
         let constraintsH = NSLayoutConstraint.constraints(withVisualFormat: "H:|[toolbar]|", options: [], metrics: nil, views: views)
-        let constraintsV = NSLayoutConstraint.constraints(withVisualFormat: "V:[toolbar(height)]|", options: [], metrics: ["height": Config.bottomBarHeight ?? 49], views: views)
+        constraintsV = NSLayoutConstraint.constraints(withVisualFormat: "V:[toolbar(height)]|", options: [], metrics: ["height": Config.bottomBarHeight ?? 49], views: views)
         NSLayoutConstraint.activate(constraintsH)
         NSLayoutConstraint.activate(constraintsV)
     }
