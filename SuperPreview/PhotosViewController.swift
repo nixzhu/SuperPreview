@@ -16,10 +16,11 @@ public enum PhotoDisplayMode {
 open class PhotosViewController: UIViewController {
 
     public var afterStatusBarAppearedAction: (() -> Void)?
-    public var photoDisplayMode: PhotoDisplayMode = .normal
 
     private weak var delegate: PhotosViewControllerDelegate?
     private let dataSource: PhotosViewControllerDataSource
+
+    public let photoDisplayMode: PhotoDisplayMode
 
     private lazy var transitionController = PhotoTransitonController()
     private var overlayActionViewWasHiddenBeforeTransition = false
@@ -85,11 +86,12 @@ open class PhotosViewController: UIViewController {
 
     // MARK: Init
 
-    public init(photos: [Photo], initialPhoto: Photo, delegate: PhotosViewControllerDelegate? = nil, preferredStatusBarStyle: UIStatusBarStyle = .default) {
+    public init(photos: [Photo], initialPhoto: Photo, delegate: PhotosViewControllerDelegate? = nil, preferredStatusBarStyle: UIStatusBarStyle = .default, photoDisplayMode: PhotoDisplayMode = .normal) {
 
         self.dataSource = PhotosDataSource(photos: photos)
         self.delegate = delegate
         self._preferredStatusBarStyle = preferredStatusBarStyle
+        self.photoDisplayMode = photoDisplayMode
 
         super.init(nibName: nil, bundle: nil)
 
