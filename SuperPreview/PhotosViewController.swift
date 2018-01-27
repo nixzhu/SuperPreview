@@ -8,9 +8,15 @@
 
 import UIKit
 
+public enum PhotoDisplayMode {
+    case normal
+    case longImagefullScreen
+}
+
 open class PhotosViewController: UIViewController {
 
     public var afterStatusBarAppearedAction: (() -> Void)?
+    public var photoDisplayMode: PhotoDisplayMode = .normal
 
     private weak var delegate: PhotosViewControllerDelegate?
     private let dataSource: PhotosViewControllerDataSource
@@ -124,7 +130,7 @@ open class PhotosViewController: UIViewController {
     }
 
     private func newPhotoViewControllerForPhoto(_ photo: Photo) -> PhotoViewController {
-        let photoViewController = PhotoViewController(photo: photo)
+        let photoViewController = PhotoViewController(photo: photo, photoDisplayMode: photoDisplayMode)
         singleTapGestureRecognizer.require(toFail: photoViewController.doubleTapGestureRecognizer)
         return photoViewController
     }

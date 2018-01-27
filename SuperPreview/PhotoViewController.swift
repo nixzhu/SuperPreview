@@ -11,10 +11,12 @@ import UIKit
 class PhotoViewController: UIViewController {
 
     let photo: Photo
+    var mode: PhotoDisplayMode
 
     lazy var scalingImageView: ScalingImageView = {
         let view = ScalingImageView(frame: self.view.bounds)
         view.delegate = self
+        view.mode = mode
         return view
     }()
 
@@ -44,9 +46,9 @@ class PhotoViewController: UIViewController {
 
     // MARK: Init
 
-    init(photo: Photo) {
+    init(photo: Photo, photoDisplayMode: PhotoDisplayMode) {
         self.photo = photo
-
+        self.mode = photoDisplayMode
         super.init(nibName: nil, bundle: nil)
     }
     

@@ -23,6 +23,15 @@ class ScalingImageView: UIScrollView {
         }
     }
 
+    var mode: PhotoDisplayMode = .normal
+
+    var isLongImage: Bool {
+        guard let realImageSize = realImageSize else { return false }
+        return realImageSize.height > bounds.height
+    }
+
+    private var realImageSize: CGSize?
+
     // MARK: Init
 
     override init(frame: CGRect) {
@@ -50,25 +59,37 @@ class ScalingImageView: UIScrollView {
     private func update(with image: UIImage) {
         imageView.transform = CGAffineTransform.identity
         imageView.image = image
-        imageView.frame = CGRect(origin: CGPoint.zero, size: image.size)
-        contentSize = image.size
+        realImageSize = image.size
+
+        if mode == .longImagefullScreen {
+            let imageRatio = image.size.height / image.size.width
+            if imageRatio > bounds.height / bounds.width {
+                realImageSize = CGSize(width: bounds.width, height: bounds.width * imageRatio)
+            }
+        }
+
+        imageView.frame = CGRect(origin: CGPoint.zero, size: realImageSize!)
+        contentSize = realImageSize!
         updateZoomScale(with: image)
         centerContent()
     }
 
     private func updateZoomScale(with image: UIImage) {
         let scrollViewFrame = bounds
-        let imageSize = image.size
+        let imageSize = realImageSize ?? image.size
         let widthScale = scrollViewFrame.width / imageSize.width
         let heightScale = scrollViewFrame.height / imageSize.height
         let minScale = min(widthScale, heightScale)
         minimumZoomScale = minScale
         maximumZoomScale = minScale * 4
         if (imageSize.height / imageSize.width) > (scrollViewFrame.height / scrollViewFrame.width) {
+            if mode == .longImagefullScreen {
+                minimumZoomScale = 1
+            }
             maximumZoomScale = max(maximumZoomScale, widthScale)
         }
         zoomScale = minimumZoomScale
-        panGestureRecognizer.isEnabled = false
+        panGestureRecognizer.isEnabled = mode == .longImagefullScreen
     }
 
     private func centerContent() {
